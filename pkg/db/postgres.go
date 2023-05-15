@@ -8,15 +8,6 @@ import (
 	"gorm.io/gorm"
 )
 
-func init() {
-	config.Global.SetDefault("db.postgres.host", "0.0.0.0")
-	config.Global.SetDefault("db.postgres.port", "5432")
-	config.Global.SetDefault("db.postgres.user", "root")
-	config.Global.SetDefault("db.postgres.password", "")
-	config.Global.SetDefault("db.postgres.dbname", "")
-	config.Global.SetDefault("db.postgres.sslmode", "disable")
-}
-
 type postgres struct {
 	Host     string
 	Port     string
@@ -24,6 +15,15 @@ type postgres struct {
 	Password string
 	DbName   string
 	SslMode  string
+}
+
+func init() {
+	config.Global.SetDefault("db.postgres.host", "0.0.0.0")
+	config.Global.SetDefault("db.postgres.port", "5432")
+	config.Global.SetDefault("db.postgres.user", "root")
+	config.Global.SetDefault("db.postgres.password", "")
+	config.Global.SetDefault("db.postgres.dbname", "")
+	config.Global.SetDefault("db.postgres.sslmode", "disable")
 }
 
 func NewPostgres() postgres {
