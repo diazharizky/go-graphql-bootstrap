@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"log"
+
 	"github.com/diazharizky/go-graphql-bootstrap/internal/models"
 )
 
@@ -14,6 +16,7 @@ type createUserInput struct {
 func (h handler) Users() []models.UserResolver {
 	users, err := h.appCtx.UserRepository.List()
 	if err != nil {
+		log.Printf("Error unable to retrieve user records: %s", err.Error())
 		return []models.UserResolver{}
 	}
 
@@ -28,12 +31,17 @@ func (h handler) Users() []models.UserResolver {
 	return resolver
 }
 
-func (handler) CreateUser(args struct{ Input createUserInput }) *models.UserResolver {
+func (h handler) CreateUser(args struct{ Input createUserInput }) *models.UserResolver {
 	user := models.User{
 		FirstName: args.Input.FirstName,
 		LastName:  args.Input.LastName,
 		Email:     args.Input.Email,
 		Age:       args.Input.Age,
+	}
+
+	if err := h.appCtx.UserRepository.Create(user); err != nil {
+		log.Printf("Error unable to create user record: %s", err.Error())
+		return &models.UserResolver{}
 	}
 
 	userResolver := models.UserResolver{

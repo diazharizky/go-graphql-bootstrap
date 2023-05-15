@@ -9,6 +9,16 @@ type userRepository struct {
 	db *gorm.DB
 }
 
+var users = []models.User{
+	{
+		ID:        1,
+		FirstName: "Foo",
+		LastName:  "Bar",
+		Email:     "foo.bar@example.com",
+		Age:       15,
+	},
+}
+
 func NewUserRepository(db *gorm.DB) userRepository {
 	return userRepository{
 		db: db,
@@ -16,14 +26,16 @@ func NewUserRepository(db *gorm.DB) userRepository {
 }
 
 func (userRepository) List() ([]models.User, error) {
-	return []models.User{}, nil
+	return users, nil
 }
 
 func (userRepository) Get(id int32) ([]models.User, error) {
 	return []models.User{}, nil
 }
 
-func (userRepository) Create(params models.User) error {
+func (r userRepository) Create(params models.User) error {
+	params.ID = int32(len(users)) + 1
+	users = append(users, params)
 	return nil
 }
 
