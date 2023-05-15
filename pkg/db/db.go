@@ -2,6 +2,7 @@ package db
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/diazharizky/go-graphql-bootstrap/config"
 	"github.com/diazharizky/go-graphql-bootstrap/internal/enum"
@@ -18,15 +19,15 @@ func init() {
 	dbType = enum.DbType(config.Global.GetString("db.type"))
 }
 
-func GetConnection() (conn *gorm.DB, err error) {
+func GetConnection() (conn *gorm.DB) {
 	db, err := getDB()
 	if err != nil {
-		return nil, err
+		log.Fatalf("Error unable to get database connection: %v", err)
 	}
 
 	conn, err = db.Connect()
 	if err != nil {
-		return nil, err
+		log.Fatalf("Error unable to get database connection: %v", err)
 	}
 
 	return
