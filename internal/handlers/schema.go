@@ -4,7 +4,7 @@ import (
 	"github.com/diazharizky/go-graphql-bootstrap/internal/models"
 )
 
-var schema models.Schema = `
+const schema models.Schema = `
 type User {
 	id: Int!
 	firstName: String!
