@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/diazharizky/go-graphql-bootstrap/config"
+	"github.com/diazharizky/go-graphql-bootstrap/internal/app"
 	"github.com/diazharizky/go-graphql-bootstrap/internal/handlers"
 	"github.com/graph-gophers/graphql-go"
 	"github.com/graph-gophers/graphql-go/relay"
@@ -16,8 +17,8 @@ func init() {
 	config.Global.SetDefault("server.port", "8080")
 }
 
-func Run() {
-	schema := graphql.MustParseSchema(handlers.NewHandler())
+func Run(appCtx *app.Context) {
+	schema := graphql.MustParseSchema(handlers.NewHandler(appCtx))
 
 	http.Handle("/query", &relay.Handler{
 		Schema: schema,
@@ -26,6 +27,8 @@ func Run() {
 	host := config.Global.GetString("server.host")
 	port := config.Global.GetString("server.port")
 	addr := fmt.Sprintf("%s:%s", host, port)
+
+	log.Printf("Server is listening to %s!", addr)
 
 	if err := http.ListenAndServe(addr, nil); err != nil {
 		log.Fatalf("Error unable to run the server: %s", err.Error())
