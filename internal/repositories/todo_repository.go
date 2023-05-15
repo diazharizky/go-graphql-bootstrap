@@ -1,11 +1,18 @@
 package repositories
 
-import "github.com/diazharizky/go-graphql-bootstrap/internal/models"
+import (
+	"github.com/diazharizky/go-graphql-bootstrap/internal/models"
+	"gorm.io/gorm"
+)
 
-type todoRepository struct{}
+type todoRepository struct {
+	db *gorm.DB
+}
 
-func NewTodoRepository() todoRepository {
-	return todoRepository{}
+func NewTodoRepository(db *gorm.DB) todoRepository {
+	return todoRepository{
+		db: db,
+	}
 }
 
 func (todoRepository) List() ([]models.Todo, error) {

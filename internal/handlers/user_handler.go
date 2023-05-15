@@ -4,22 +4,17 @@ import (
 	"github.com/diazharizky/go-graphql-bootstrap/internal/models"
 )
 
-func (handler) Users() []models.UserResolver {
-	users := []models.User{
-		{
-			ID:        1,
-			FirstName: "Adi",
-			LastName:  "Hidayat",
-			Email:     "adi.hidayat@gmail.com",
-			Age:       38,
-		},
-		{
-			ID:        2,
-			FirstName: "Syafiq",
-			LastName:  "Riza",
-			Email:     "syafiq.riza@gmail.com",
-			Age:       45,
-		},
+type createUserInput struct {
+	FirstName string
+	LastName  string
+	Email     string
+	Age       int32
+}
+
+func (h handler) Users() []models.UserResolver {
+	users, err := h.appCtx.UserRepository.List()
+	if err != nil {
+		return []models.UserResolver{}
 	}
 
 	resolver := make([]models.UserResolver, len(users))
@@ -31,4 +26,19 @@ func (handler) Users() []models.UserResolver {
 	}
 
 	return resolver
+}
+
+func (handler) CreateUser(args struct{ Input createUserInput }) *models.UserResolver {
+	user := models.User{
+		FirstName: args.Input.FirstName,
+		LastName:  args.Input.LastName,
+		Email:     args.Input.Email,
+		Age:       args.Input.Age,
+	}
+
+	userResolver := models.UserResolver{
+		User: user,
+	}
+
+	return &userResolver
 }

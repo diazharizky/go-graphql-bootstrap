@@ -1,11 +1,18 @@
 package repositories
 
-import "github.com/diazharizky/go-graphql-bootstrap/internal/models"
+import (
+	"github.com/diazharizky/go-graphql-bootstrap/internal/models"
+	"gorm.io/gorm"
+)
 
-type userRepository struct{}
+type userRepository struct {
+	db *gorm.DB
+}
 
-func NewUserRepository() userRepository {
-	return userRepository{}
+func NewUserRepository(db *gorm.DB) userRepository {
+	return userRepository{
+		db: db,
+	}
 }
 
 func (userRepository) List() ([]models.User, error) {

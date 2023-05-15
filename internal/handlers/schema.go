@@ -5,8 +5,24 @@ import (
 )
 
 const schema models.Schema = `
+type Query {
+	users: [User!]!
+	todos: [Todo!]!
+}
+
+type Mutation {
+	createUser(input: NewUser!): User
+}
+
 type User {
 	id: Int!
+	firstName: String!
+	lastName: String!
+	email: String!
+	age: Int!
+}
+
+input NewUser {
 	firstName: String!
 	lastName: String!
 	email: String!
@@ -17,10 +33,5 @@ type Todo {
 	id: Int!
 	description: String!
 	owner: User!
-}
-
-type Query {
-	users: [User!]!
-	todos: [Todo!]!
 }
 `
