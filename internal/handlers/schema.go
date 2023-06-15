@@ -1,10 +1,10 @@
 package handlers
 
 import (
-	"github.com/diazharizky/go-graphql-bootstrap/internal/models"
+	"github.com/diazharizky/go-graphql-bootstrap/internal/types"
 )
 
-const schema models.Schema = `
+const schema types.Schema = `
 type Query {
 	users: [User!]!
 	todos: [Todo!]!
