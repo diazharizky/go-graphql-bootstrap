@@ -5,8 +5,13 @@ server:
 db:
   type: postgres
   postgres:
-    host: "0.0.0.0"
+    host: '0.0.0.0'
     port: 5432
     user: postgres
     password: postgres
     dbname: postgres
+
+mongodb:
+  host: localhost
+  port: 27017
+  db: gqlbootstrap
