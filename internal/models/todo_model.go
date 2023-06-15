@@ -1,17 +1,19 @@
 package models
 
+import "go.mongodb.org/mongo-driver/bson/primitive"
+
 type Todo struct {
-	ID          int32        `json:"id"`
-	Description string       `json:"description"`
-	Owner       UserResolver `json:"owner"`
+	ID          primitive.ObjectID `json:"id" bson:"_id"`
+	Description string             `json:"description" bson:"description"`
+	Owner       UserResolver       `json:"owner" bson:"owner"`
 }
 
 type TodoResolver struct {
 	Todo Todo
 }
 
-func (r TodoResolver) ID() int32 {
-	return r.Todo.ID
+func (r TodoResolver) ID() string {
+	return r.Todo.ID.String()
 }
 
 func (r TodoResolver) Description() string {
