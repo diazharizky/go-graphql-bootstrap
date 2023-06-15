@@ -2,11 +2,12 @@ package handlers
 
 import (
 	"github.com/diazharizky/go-graphql-bootstrap/internal/models"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func (handler) Todos() []models.TodoResolver {
 	user := models.User{
-		ID:        1,
+		ID:        primitive.NewObjectID(),
 		FirstName: "Adi",
 		LastName:  "Hidayat",
 		Email:     "adi.hidayat@gmail.com",
@@ -19,17 +20,17 @@ func (handler) Todos() []models.TodoResolver {
 
 	todos := []models.Todo{
 		{
-			ID:          1,
+			ID:          primitive.NewObjectID(),
 			Description: "Todo A",
 			Owner:       userResolver,
 		},
 		{
-			ID:          2,
+			ID:          primitive.NewObjectID(),
 			Description: "Todo B",
 			Owner:       userResolver,
 		},
 		{
-			ID:          3,
+			ID:          primitive.NewObjectID(),
 			Description: "Todo C",
 			Owner:       userResolver,
 		},

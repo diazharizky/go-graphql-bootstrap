@@ -2,16 +2,17 @@ package repositories
 
 import (
 	"github.com/diazharizky/go-graphql-bootstrap/internal/models"
-	"gorm.io/gorm"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type userRepository struct {
-	db *gorm.DB
+	db *mongo.Database
 }
 
 var users = []models.User{
 	{
-		ID:        1,
+		ID:        primitive.NewObjectID(),
 		FirstName: "Foo",
 		LastName:  "Bar",
 		Email:     "foo.bar@example.com",
@@ -19,7 +20,7 @@ var users = []models.User{
 	},
 }
 
-func NewUserRepository(db *gorm.DB) userRepository {
+func NewUserRepository(db *mongo.Database) userRepository {
 	return userRepository{
 		db: db,
 	}
@@ -34,7 +35,7 @@ func (userRepository) Get(id int32) ([]models.User, error) {
 }
 
 func (r userRepository) Create(params models.User) error {
-	params.ID = int32(len(users)) + 1
+	params.ID = primitive.NewObjectID()
 	users = append(users, params)
 	return nil
 }

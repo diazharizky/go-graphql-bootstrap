@@ -2,14 +2,14 @@ package repositories
 
 import (
 	"github.com/diazharizky/go-graphql-bootstrap/internal/models"
-	"gorm.io/gorm"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type todoRepository struct {
-	db *gorm.DB
+	db *mongo.Database
 }
 
-func NewTodoRepository(db *gorm.DB) todoRepository {
+func NewTodoRepository(db *mongo.Database) todoRepository {
 	return todoRepository{
 		db: db,
 	}

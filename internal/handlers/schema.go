@@ -1,8 +1,6 @@
 package handlers
 
-import (
-	"github.com/diazharizky/go-graphql-bootstrap/internal/types"
-)
+import "github.com/diazharizky/go-graphql-bootstrap/internal/types"
 
 const schema types.Schema = `
 type Query {
@@ -15,7 +13,7 @@ type Mutation {
 }
 
 type User {
-	id: Int!
+	id: String!
 	firstName: String!
 	lastName: String!
 	email: String!
@@ -30,7 +28,7 @@ input NewUser {
 }
 
 type Todo {
-	id: Int!
+	id: String!
 	description: String!
 	owner: User!
 }
