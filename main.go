@@ -14,7 +14,7 @@ func main() {
 
 	db, err := mongodb.GetDB()
 	if err != nil {
-		log.Fatalf("error unable to get database: %v", err)
+		log.Fatalf("Error unable to get database: %v", err)
 	}
 
 	appCtx.UserRepository = repositories.NewUserRepository(db)

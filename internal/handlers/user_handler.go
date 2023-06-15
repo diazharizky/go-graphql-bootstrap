@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/diazharizky/go-graphql-bootstrap/internal/models"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type createUserInput struct {
@@ -33,6 +34,7 @@ func (h handler) Users() []models.UserResolver {
 
 func (h handler) CreateUser(args struct{ Input createUserInput }) *models.UserResolver {
 	user := models.User{
+		ID:        primitive.NewObjectID(),
 		FirstName: args.Input.FirstName,
 		LastName:  args.Input.LastName,
 		Email:     args.Input.Email,
