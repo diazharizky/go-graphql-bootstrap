@@ -1,32 +1,36 @@
 package repositories
 
 import (
+	"context"
+
 	"github.com/diazharizky/go-graphql-bootstrap/internal/models"
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type userRepository struct {
-	db *mongo.Database
-}
-
-var users = []models.User{
-	{
-		ID:        primitive.NewObjectID(),
-		FirstName: "Foo",
-		LastName:  "Bar",
-		Email:     "foo.bar@example.com",
-		Age:       15,
-	},
+	coll *mongo.Collection
 }
 
 func NewUserRepository(db *mongo.Database) userRepository {
 	return userRepository{
-		db: db,
+		coll: db.Collection("users"),
 	}
 }
 
-func (userRepository) List() ([]models.User, error) {
+func (repo userRepository) List() ([]models.User, error) {
+	ctx := context.TODO()
+
+	cur, err := repo.coll.Find(ctx, bson.M{})
+	if err != nil {
+		return nil, err
+	}
+
+	var users []models.User
+	if err = cur.All(ctx, &users); err != nil {
+		return nil, err
+	}
+
 	return users, nil
 }
 
@@ -34,10 +38,9 @@ func (userRepository) Get(id int32) ([]models.User, error) {
 	return []models.User{}, nil
 }
 
-func (r userRepository) Create(params models.User) error {
-	params.ID = primitive.NewObjectID()
-	users = append(users, params)
-	return nil
+func (repo userRepository) Create(newUser models.User) error {
+	_, err := repo.coll.InsertOne(context.TODO(), newUser)
+	return err
 }
 
 func (userRepository) Update(params models.User) error {
