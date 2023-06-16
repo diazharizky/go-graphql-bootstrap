@@ -28,7 +28,7 @@ func Run(appCtx *app.Ctx) {
 	port := config.Global.GetString("server.port")
 	addr := fmt.Sprintf("%s:%s", host, port)
 
-	log.Printf("Server is listening to %s!", addr)
+	log.Printf("Server is listening on %s!", addr)
 
 	if err := http.ListenAndServe(addr, nil); err != nil {
 		log.Fatalf("Error unable to run the server: %s", err.Error())
