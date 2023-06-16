@@ -20,7 +20,7 @@ func init() {
 func Run(appCtx *app.Ctx) {
 	schema := graphql.MustParseSchema(handlers.New(appCtx))
 
-	http.Handle("/query", &relay.Handler{
+	http.Handle("/", &relay.Handler{
 		Schema: schema,
 	})
 
