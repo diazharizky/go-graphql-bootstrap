@@ -1,8 +1,6 @@
 package app
 
-import (
-	"github.com/diazharizky/go-graphql-bootstrap/internal/models"
-)
+import "github.com/diazharizky/go-graphql-bootstrap/internal/models"
 
 type IUserRepository interface {
 	List() ([]models.User, error)
