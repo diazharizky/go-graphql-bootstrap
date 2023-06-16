@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/diazharizky/go-graphql-bootstrap/internal/models"
+	"github.com/diazharizky/go-graphql-bootstrap/internal/resolvers"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -14,17 +15,17 @@ type createUserInput struct {
 	Age       int32
 }
 
-func (h handler) Users() []models.UserResolver {
+func (h handler) Users() []resolvers.UserResolver {
 	users, err := h.appCtx.UserRepository.List()
 	if err != nil {
 		log.Printf("Error unable to retrieve user records: %s", err.Error())
-		return []models.UserResolver{}
+		return []resolvers.UserResolver{}
 	}
 
-	resolver := make([]models.UserResolver, len(users))
+	resolver := make([]resolvers.UserResolver, len(users))
 
 	for i, u := range users {
-		resolver[i] = models.UserResolver{
+		resolver[i] = resolvers.UserResolver{
 			User: u,
 		}
 	}
@@ -32,7 +33,7 @@ func (h handler) Users() []models.UserResolver {
 	return resolver
 }
 
-func (h handler) CreateUser(args struct{ Input createUserInput }) *models.UserResolver {
+func (h handler) CreateUser(args struct{ Input createUserInput }) *resolvers.UserResolver {
 	user := models.User{
 		ID:        primitive.NewObjectID(),
 		FirstName: args.Input.FirstName,
@@ -43,10 +44,10 @@ func (h handler) CreateUser(args struct{ Input createUserInput }) *models.UserRe
 
 	if err := h.appCtx.UserRepository.Create(user); err != nil {
 		log.Printf("Error unable to create user record: %s", err.Error())
-		return &models.UserResolver{}
+		return &resolvers.UserResolver{}
 	}
 
-	userResolver := models.UserResolver{
+	userResolver := resolvers.UserResolver{
 		User: user,
 	}
 

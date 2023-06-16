@@ -2,10 +2,11 @@ package handlers
 
 import (
 	"github.com/diazharizky/go-graphql-bootstrap/internal/models"
+	"github.com/diazharizky/go-graphql-bootstrap/internal/resolvers"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func (handler) Todos() []models.TodoResolver {
+func (handler) Todos() []resolvers.TodoResolver {
 	user := models.User{
 		ID:        primitive.NewObjectID(),
 		FirstName: "Adi",
@@ -14,32 +15,28 @@ func (handler) Todos() []models.TodoResolver {
 		Age:       30,
 	}
 
-	userResolver := models.UserResolver{
-		User: user,
-	}
-
 	todos := []models.Todo{
 		{
 			ID:          primitive.NewObjectID(),
 			Description: "Todo A",
-			Owner:       userResolver,
+			Owner:       user,
 		},
 		{
 			ID:          primitive.NewObjectID(),
 			Description: "Todo B",
-			Owner:       userResolver,
+			Owner:       user,
 		},
 		{
 			ID:          primitive.NewObjectID(),
 			Description: "Todo C",
-			Owner:       userResolver,
+			Owner:       user,
 		},
 	}
 
-	resolver := make([]models.TodoResolver, len(todos))
+	resolver := make([]resolvers.TodoResolver, len(todos))
 
 	for i, t := range todos {
-		resolver[i] = models.TodoResolver{
+		resolver[i] = resolvers.TodoResolver{
 			Todo: t,
 		}
 	}

@@ -1,0 +1,6 @@
+input NewUser {
+  firstName: String!
+  lastName: String!
+  email: String!
+  age: Int!
+}
