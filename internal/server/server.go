@@ -17,8 +17,8 @@ func init() {
 	config.Global.SetDefault("server.port", "8080")
 }
 
-func Run(appCtx *app.Context) {
-	schema := graphql.MustParseSchema(handlers.NewHandler(appCtx))
+func Run(appCtx *app.Ctx) {
+	schema := graphql.MustParseSchema(handlers.New(appCtx))
 
 	http.Handle("/query", &relay.Handler{
 		Schema: schema,

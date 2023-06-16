@@ -1,10 +1,10 @@
 package app
 
-type Context struct {
+type Ctx struct {
 	UserRepository IUserRepository
 	TodoRepository ITodoRepository
 }
 
-func NewContext() *Context {
-	return &Context{}
+func NewCtx() *Ctx {
+	return &Ctx{}
 }

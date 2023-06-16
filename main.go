@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	appCtx := app.NewContext()
+	appCtx := app.NewCtx()
 
 	db, err := mongodb.GetDB()
 	if err != nil {

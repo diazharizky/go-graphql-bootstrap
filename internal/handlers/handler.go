@@ -8,10 +8,10 @@ import (
 )
 
 type handler struct {
-	appCtx *app.Context
+	appCtx *app.Ctx
 }
 
-func NewHandler(appCtx *app.Context) (string, *handler) {
+func New(appCtx *app.Ctx) (string, *handler) {
 	s, err := schema.String()
 	if err != nil {
 		log.Fatalf("Error unable to generate schema: %v", err)
