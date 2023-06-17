@@ -1,15 +1,14 @@
 package resolvers
 
 import (
-	"log"
-
 	"github.com/diazharizky/go-graphql-bootstrap/internal/app"
 	"github.com/diazharizky/go-graphql-bootstrap/internal/models"
 )
 
 type UserResolver struct {
 	appCtx *app.Ctx
-	User   models.User
+
+	User models.User
 }
 
 func (r UserResolver) ID() string {
@@ -32,7 +31,7 @@ func (r UserResolver) Age() int32 {
 	return r.User.Age
 }
 
-func (r UserResolver) Todos() *[]*TodoResolver { // Must returns pointer type since it returns a resolver
+func (r UserResolver) Todos() *[]*TodoResolver { // Must return pointer type since it returns a resolver
 	tdl := NewTodoList(r.appCtx, r.ID())
 
 	return &tdl
@@ -56,7 +55,6 @@ func NewUser(appCtx *app.Ctx, id string) *UserResolver {
 func NewUserList(appCtx *app.Ctx) []UserResolver {
 	users, err := appCtx.UserRepository.List()
 	if err != nil {
-		log.Printf("Error unable to retrieve user records: %s", err.Error())
 		return nil
 	}
 
