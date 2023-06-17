@@ -16,21 +16,7 @@ type createUserInput struct {
 }
 
 func (h handler) Users() []resolvers.UserResolver {
-	users, err := h.appCtx.UserRepository.List()
-	if err != nil {
-		log.Printf("Error unable to retrieve user records: %s", err.Error())
-		return []resolvers.UserResolver{}
-	}
-
-	resolver := make([]resolvers.UserResolver, len(users))
-
-	for i, u := range users {
-		resolver[i] = resolvers.UserResolver{
-			User: u,
-		}
-	}
-
-	return resolver
+	return resolvers.NewUserList(h.appCtx)
 }
 
 func (h handler) CreateUser(args struct{ Input createUserInput }) *resolvers.UserResolver {
@@ -52,4 +38,8 @@ func (h handler) CreateUser(args struct{ Input createUserInput }) *resolvers.Use
 	}
 
 	return &userResolver
+}
+
+func (h handler) User(args struct{ ID string }) *resolvers.UserResolver {
+	return resolvers.NewUser(h.appCtx, args.ID)
 }

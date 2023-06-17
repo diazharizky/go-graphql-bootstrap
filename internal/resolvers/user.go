@@ -1,13 +1,19 @@
 package resolvers
 
-import "github.com/diazharizky/go-graphql-bootstrap/internal/models"
+import (
+	"log"
+
+	"github.com/diazharizky/go-graphql-bootstrap/internal/app"
+	"github.com/diazharizky/go-graphql-bootstrap/internal/models"
+)
 
 type UserResolver struct {
-	User models.User
+	appCtx *app.Ctx
+	User   models.User
 }
 
 func (r UserResolver) ID() string {
-	return r.User.ID.String()
+	return r.User.ID.Hex()
 }
 
 func (r UserResolver) FirstName() string {
@@ -24,4 +30,42 @@ func (r UserResolver) Email() string {
 
 func (r UserResolver) Age() int32 {
 	return r.User.Age
+}
+
+func (r UserResolver) Todos() *[]*TodoResolver {
+	tdl := NewTodoList(r.appCtx, r.ID())
+
+	return tdl
+}
+
+func NewUser(appCtx *app.Ctx, id string) *UserResolver {
+	ur := UserResolver{
+		appCtx: appCtx,
+	}
+
+	user, err := appCtx.UserRepository.Get(id)
+	if err != nil {
+		return nil
+	}
+
+	ur.User = *user
+
+	return &ur
+}
+
+func NewUserList(appCtx *app.Ctx) []UserResolver {
+	users, err := appCtx.UserRepository.List()
+	if err != nil {
+		log.Printf("Error unable to retrieve user records: %s", err.Error())
+		return nil
+	}
+
+	userList := make([]UserResolver, len(users))
+	for i, u := range users {
+		userList[i] = UserResolver{
+			User: u,
+		}
+	}
+
+	return userList
 }

@@ -1,45 +1,37 @@
 package handlers
 
 import (
+	"log"
+
 	"github.com/diazharizky/go-graphql-bootstrap/internal/models"
 	"github.com/diazharizky/go-graphql-bootstrap/internal/resolvers"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func (handler) Todos() []resolvers.TodoResolver {
-	user := models.User{
-		ID:        primitive.NewObjectID(),
-		FirstName: "Adi",
-		LastName:  "Hidayat",
-		Email:     "adi.hidayat@gmail.com",
-		Age:       30,
+type createTodoInput struct {
+	UserID      string
+	Description string
+}
+
+func (h handler) Todos() []*resolvers.TodoResolver {
+	return *resolvers.NewTodoList(h.appCtx)
+}
+
+func (h handler) CreateTodo(args struct{ Input createTodoInput }) *resolvers.TodoResolver {
+	todo := models.Todo{
+		ID:          primitive.NewObjectID(),
+		UserID:      args.Input.UserID,
+		Description: args.Input.Description,
 	}
 
-	todos := []models.Todo{
-		{
-			ID:          primitive.NewObjectID(),
-			Description: "Todo A",
-			Owner:       user,
-		},
-		{
-			ID:          primitive.NewObjectID(),
-			Description: "Todo B",
-			Owner:       user,
-		},
-		{
-			ID:          primitive.NewObjectID(),
-			Description: "Todo C",
-			Owner:       user,
-		},
+	if err := h.appCtx.TodoRepository.Create(todo); err != nil {
+		log.Printf("Error unable to create todo record: %s", err.Error())
+		return &resolvers.TodoResolver{}
 	}
 
-	resolver := make([]resolvers.TodoResolver, len(todos))
-
-	for i, t := range todos {
-		resolver[i] = resolvers.TodoResolver{
-			Todo: t,
-		}
+	todoResolver := resolvers.TodoResolver{
+		Todo: todo,
 	}
 
-	return resolver
+	return &todoResolver
 }

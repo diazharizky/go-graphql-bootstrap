@@ -5,6 +5,7 @@ import (
 
 	"github.com/diazharizky/go-graphql-bootstrap/internal/models"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -34,8 +35,19 @@ func (repo userRepository) List() ([]models.User, error) {
 	return users, nil
 }
 
-func (userRepository) Get(id int32) ([]models.User, error) {
-	return []models.User{}, nil
+func (repo userRepository) Get(id string) (user *models.User, err error) {
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return
+	}
+
+	filter := bson.M{
+		"_id": objectID,
+	}
+
+	err = repo.coll.FindOne(context.TODO(), filter).Decode(&user)
+
+	return
 }
 
 func (repo userRepository) Create(newUser models.User) error {
@@ -47,6 +59,6 @@ func (userRepository) Update(params models.User) error {
 	return nil
 }
 
-func (userRepository) Delete(id int32) error {
+func (userRepository) Delete(id string) error {
 	return nil
 }

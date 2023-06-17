@@ -18,10 +18,10 @@ func NewTodoRepository(db *mongo.Database) todoRepository {
 	}
 }
 
-func (repo todoRepository) List() ([]models.Todo, error) {
+func (repo todoRepository) List(filter bson.M) ([]models.Todo, error) {
 	ctx := context.TODO()
 
-	cur, err := repo.coll.Find(ctx, bson.M{})
+	cur, err := repo.coll.Find(ctx, filter)
 	if err != nil {
 		return nil, err
 	}
@@ -34,8 +34,8 @@ func (repo todoRepository) List() ([]models.Todo, error) {
 	return todos, nil
 }
 
-func (todoRepository) Get(id int32) ([]models.Todo, error) {
-	return []models.Todo{}, nil
+func (todoRepository) Get(id string) (*models.Todo, error) {
+	return &models.Todo{}, nil
 }
 
 func (repo todoRepository) Create(newTodo models.Todo) error {
@@ -47,6 +47,6 @@ func (todoRepository) Update(params models.Todo) error {
 	return nil
 }
 
-func (todoRepository) Delete(id int32) error {
+func (todoRepository) Delete(id string) error {
 	return nil
 }

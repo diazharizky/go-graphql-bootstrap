@@ -8,4 +8,5 @@ type User struct {
 	LastName  string             `json:"lastName" bson:"lastName"`
 	Email     string             `json:"email" bson:"email"`
 	Age       int32              `json:"age" bson:"age"`
+	Todos     []Todo             `json:"todos"`
 }

@@ -1,4 +1,5 @@
 type Query {
   users: [User!]!
   todos: [Todo!]!
+  user(id: String!): User
 }
