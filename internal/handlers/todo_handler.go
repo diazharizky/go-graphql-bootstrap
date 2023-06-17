@@ -14,7 +14,7 @@ type createTodoInput struct {
 }
 
 func (h handler) Todos() []*resolvers.TodoResolver {
-	return *resolvers.NewTodoList(h.appCtx)
+	return resolvers.NewTodoList(h.appCtx)
 }
 
 func (h handler) CreateTodo(args struct{ Input createTodoInput }) *resolvers.TodoResolver {

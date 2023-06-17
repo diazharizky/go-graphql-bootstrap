@@ -32,10 +32,10 @@ func (r UserResolver) Age() int32 {
 	return r.User.Age
 }
 
-func (r UserResolver) Todos() *[]*TodoResolver {
+func (r UserResolver) Todos() *[]*TodoResolver { // Must returns pointer type since it returns a resolver
 	tdl := NewTodoList(r.appCtx, r.ID())
 
-	return tdl
+	return &tdl
 }
 
 func NewUser(appCtx *app.Ctx, id string) *UserResolver {
@@ -63,7 +63,8 @@ func NewUserList(appCtx *app.Ctx) []UserResolver {
 	userList := make([]UserResolver, len(users))
 	for i, u := range users {
 		userList[i] = UserResolver{
-			User: u,
+			appCtx: appCtx,
+			User:   u,
 		}
 	}
 

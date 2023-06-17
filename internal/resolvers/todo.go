@@ -22,7 +22,7 @@ func (r TodoResolver) Description() string {
 	return r.Todo.Description
 }
 
-func NewTodoList(appCtx *app.Ctx, userID ...string) *[]*TodoResolver {
+func NewTodoList(appCtx *app.Ctx, userID ...string) []*TodoResolver {
 	filter := bson.M{}
 
 	if len(userID) > 0 {
@@ -40,5 +40,5 @@ func NewTodoList(appCtx *app.Ctx, userID ...string) *[]*TodoResolver {
 		todoList[i] = &TodoResolver{todo}
 	}
 
-	return &todoList
+	return todoList
 }
