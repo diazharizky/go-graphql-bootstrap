@@ -1,3 +1,6 @@
+// DISCLAIMER:
+// Got this awesome code from https://github.com/tonyghita/graphql-go-example, thanks a ton!
+
 // Package schema contains all of the Schema Definition Files (abbreviated SDL)
 // which define this API.
 //
