@@ -5,7 +5,6 @@ import (
 
 	"github.com/diazharizky/go-graphql-bootstrap/internal/models"
 	"github.com/diazharizky/go-graphql-bootstrap/internal/resolvers"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type createTodoInput struct {
@@ -19,12 +18,11 @@ func (h handler) Todos() []*resolvers.TodoResolver {
 
 func (h handler) CreateTodo(args struct{ Input createTodoInput }) *resolvers.TodoResolver {
 	todo := models.Todo{
-		ID:          primitive.NewObjectID(),
 		UserID:      args.Input.UserID,
 		Description: args.Input.Description,
 	}
 
-	if err := h.appCtx.TodoRepository.Create(todo); err != nil {
+	if err := h.appCtx.TodoRepository.Create(&todo); err != nil {
 		log.Printf("Error unable to create todo record: %s", err.Error())
 		return &resolvers.TodoResolver{}
 	}

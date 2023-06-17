@@ -5,6 +5,7 @@ import (
 
 	"github.com/diazharizky/go-graphql-bootstrap/internal/models"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -34,11 +35,24 @@ func (repo todoRepository) List(filter bson.M) ([]models.Todo, error) {
 	return todos, nil
 }
 
-func (todoRepository) Get(id string) (*models.Todo, error) {
-	return &models.Todo{}, nil
+func (repo todoRepository) Get(id string) (todo *models.Todo, err error) {
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return
+	}
+
+	filter := bson.M{
+		"_id": objectID,
+	}
+
+	err = repo.coll.FindOne(context.TODO(), filter).Decode(&todo)
+
+	return
 }
 
-func (repo todoRepository) Create(newTodo models.Todo) error {
+func (repo todoRepository) Create(newTodo *models.Todo) error {
+	newTodo.ID = primitive.NewObjectID()
+
 	_, err := repo.coll.InsertOne(context.TODO(), newTodo)
 	return err
 }

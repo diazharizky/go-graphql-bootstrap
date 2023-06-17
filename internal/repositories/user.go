@@ -50,7 +50,9 @@ func (repo userRepository) Get(id string) (user *models.User, err error) {
 	return
 }
 
-func (repo userRepository) Create(newUser models.User) error {
+func (repo userRepository) Create(newUser *models.User) error {
+	newUser.ID = primitive.NewObjectID()
+
 	_, err := repo.coll.InsertOne(context.TODO(), newUser)
 	return err
 }
